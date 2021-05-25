@@ -3,11 +3,34 @@ package main
 import (
 	"fmt"
 
-	"github.com/Mr-Cookie-L/algorithm/pkg/array"
+	"github.com/Mr-Cookie-L/algorithm/pkg/linkedlist"
 )
 
 func main() {
-	a := []int{1, 3, 4, 2, 6, 8, 2, 0, 19, 9}
-	array.QuickSort(a, 0, len(a)-1)
-	fmt.Println(a)
+	link1 := &linkedlist.ListNode{
+		Val: 1,
+		Next: &linkedlist.ListNode{
+			Val: 4,
+			Next: &linkedlist.ListNode{
+				Val: 5,
+			},
+		},
+	}
+	link2 := &linkedlist.ListNode{
+		Val: 2,
+		Next: &linkedlist.ListNode{
+			Val: 3,
+			Next: &linkedlist.ListNode{
+				Val: 6,
+			},
+		},
+	}
+	res := linkedlist.Merge(link1, link2)
+	for {
+		if res.Next == nil {
+			break
+		}
+		fmt.Println("res.val-------------", res.Val)
+		res = res.Next
+	}
 }
