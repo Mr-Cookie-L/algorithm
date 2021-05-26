@@ -49,3 +49,39 @@ func Duplicate(numbers []int) int {
 	}
 	return -1
 }
+
+/*
+给定一个数组A[0,1,...,n-1],请构建一个数组B[0,1,...,n-1],其中B中的元素B[i]=A[0]*A[1]*...*A[i-1]*A[i+1]*...*A[n-1]。不能使用除法。（注意：规定B[0] = A[1] * A[2] * ... * A[n-1]，B[n-1] = A[0] * A[1] * ... * A[n-2];）
+对于A长度为1的情况，B无意义，故而无法构建，因此该情况不会存在。
+*/
+/*
+分析：
+	由于不能用除法，且B[i]=A[0]*A[1]*...*A[i-1]*A[i+1]*...*A[n-1]，我们可以把b[i]分成左右两部分，即
+	B[i] = left[i] * right[i]
+	left[i] = A[0]*A[1]*...*A[i-1]
+	right[i] = A[i+1]*A[i+2]*...*A[n-1]
+	故
+	left[i+1] = A[0]*A[1]*...*A[i] = left[i]*A[i]
+	right[i+1] = A[i+2]*A[i+3]*...*A[n-1] => right[i] = right[i+1]*A[i+1]
+	所以，我们可以先计算left，再计算right
+	B[0]	1		A[1]	A[2]	A[3]	...    A[n-1]
+	B[1]	A[0]	1		A[2]	A[3]	...    A[n-1]
+	B[2]	A[0]	A[1]	1		A[3]	...    A[n-1]
+	B[3]	A[0]	A[1]	A[2]	1		...    A[n-1]
+	B[n-1]	A[0]	A[1]	A[2]	A[3]	...    1
+*/
+func multiply(A []int) []int {
+	l := len(A)
+	B := make([]int, l)
+	tmp := 1
+	for i := 0; i < l; i++ {
+		B[i] = tmp
+		tmp *= A[i]
+	}
+	tmp = 1
+	for i := l - 1; i >= 0; i-- {
+		B[i] *= tmp
+		tmp *= A[i]
+	}
+	return B
+}
