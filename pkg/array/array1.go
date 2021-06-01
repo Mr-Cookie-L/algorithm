@@ -4,13 +4,9 @@ package array
 把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。
 输入一个非递减排序(后一个元素>=前一个元素)的数组的一个旋转，输出旋转数组的最小元素。
 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
-*/
 
-/**
- *
- * @param rotateArray int整型一维数组
- * @return int整型
- */
+思路：使用二分法，递归，逐步缩小数组的范围，最终找到最小的值（也就是旋转的原点）
+*/
 func minNumberInRotateArray(rotateArray []int) int {
 	// write code here
 	if len(rotateArray) == 0 {
@@ -84,4 +80,25 @@ func multiply(A []int) []int {
 		tmp *= A[i]
 	}
 	return B
+}
+
+/*
+输入一个数组，长度为100，其中值的范围都是0-10，求该数组的99分位数（array[有序数组长度*0.99]）
+
+思路：由于需要数组有序，且值范围都在0-10之间，使用map统计其出现次数，然后找到对应的索引的值即可
+*/
+func Index99(input []int) int {
+	index99 := int(float64(len(input)) * 0.99)
+	m := map[int]int{}
+	for _, n := range input {
+		m[n]++
+	}
+	j := 0
+	for i := 0; i <= 10; i++ {
+		j += m[i]
+		if j >= index99 {
+			return i
+		}
+	}
+	return 0
 }
