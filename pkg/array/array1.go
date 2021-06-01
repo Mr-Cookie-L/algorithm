@@ -1,5 +1,11 @@
 package array
 
+import (
+	"sort"
+	"strconv"
+	"strings"
+)
+
 /*
 把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。
 输入一个非递减排序(后一个元素>=前一个元素)的数组的一个旋转，输出旋转数组的最小元素。
@@ -101,4 +107,24 @@ func Index99(input []int) int {
 		}
 	}
 	return 0
+}
+
+/*
+输入一个无序的数组，将数组排成最小的字符串
+例如输入[1,21,2]，输出 1212
+
+思路：重点在于字符串状态下 a+b < b+a  那么a就排在前面
+
+go语言可以直接使用字符串进行比较，比较时会将string转化为[]byte，然后依次比较每个元素
+例如 "101" < "1001" 返回是 false，因为string的第三位转化为[]byte时，1 > 0，因此就会返回false
+*/
+func PrintMinNumber(numbers []int) string {
+	strList := []string{}
+	for _, n := range numbers {
+		strList = append(strList, strconv.Itoa(n))
+	}
+	sort.Slice(strList, func(i, j int) bool {
+		return strList[i]+strList[j] < strList[j]+strList[i]
+	})
+	return strings.Join(strList, "")
 }
