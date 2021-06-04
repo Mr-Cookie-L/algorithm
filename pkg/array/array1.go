@@ -128,3 +128,92 @@ func PrintMinNumber(numbers []int) string {
 	})
 	return strings.Join(strList, "")
 }
+
+/*
+给定一个数组arr，返回子数组的最大累加和
+例如，arr = [1, -2, 3, 5, -2, 6, -1]，所有子数组中，[3, 5, -2, 6]可以累加出最大的和12，所以返回12.
+题目保证没有全为负数的数据
+[要求]
+时间复杂度为O(n)O(n)，空间复杂度为O(1)O(1)
+
+思路：
+	设置两个值，一个代表全局最大和(max)，一个代表当前和(cur)
+	如果当前和 < 0，则将其=0
+	如果当前和 > max，则max = cur
+	如此循环完数组，max一定是最大和
+*/
+func MaxsumofSubarray(arr []int) int {
+	max := 0
+	cur := 0
+	if len(arr) == 1 {
+		return arr[0]
+	}
+	for _, n := range arr {
+		cur += n
+		if cur < 0 {
+			cur = 0
+		} else if cur > max {
+			max = cur
+		}
+	}
+	return max
+}
+
+/*
+给出两个有序的整数数组A和B ，请将数组B合并到数组A中，变成一个有序的数组
+注意：
+可以假设A数组有足够的空间存放B数组的元素，A和B中初始的元素数目分别为m和n
+
+思路：
+	由于不会返回新的数组，所以要在A数组上直接操作
+	合并操作，如果考虑到时间复杂度，肯定要用归并排序，不能使用双层循环
+	如果从头开始遍历，那A数组的元素向后移动肯定很困难
+	所以可以考虑从尾遍历，既然A有足够空间，那可以从m+n的位置入手去修改数据
+*/
+func Merge(A []int, m int, B []int, n int) {
+	a, b, i := m-1, n-1, m+n-1
+	for i >= 0 {
+		if a >= 0 && b >= 0 {
+			if A[a] > B[b] {
+				A[i] = A[a]
+				a--
+			} else {
+				A[i] = B[b]
+				b--
+			}
+		} else if a < 0 && b >= 0 {
+			A[i] = B[b]
+			b--
+		} else {
+			break
+		}
+		i--
+	}
+}
+
+/*
+上题的简单版本，A、B为有序数组(升序)，输出合并后的有序数组
+
+思路：
+	归并排序思路，循环并判断值的大小
+*/
+func MergeAndReturn(A []int, B []int) []int {
+	i, j := 0, 0
+	res := []int{}
+	for i < len(A)-1 && j < len(B)-1 {
+		if A[i] > B[j] {
+			res = append(res, B[j])
+			j++
+		} else {
+			res = append(res, A[i])
+			i++
+		}
+	}
+	if i >= len(A) {
+		res = append(res, B[j:]...)
+	}
+	if j >= len(B) {
+		res = append(res, A[i:]...)
+	}
+	return res
+}

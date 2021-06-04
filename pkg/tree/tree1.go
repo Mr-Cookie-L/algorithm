@@ -88,3 +88,43 @@ func VerifySquenceOfBST(sequence []int) bool {
 		return true
 	}
 }
+
+/*
+从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+例如，输入树为
+	1
+   / \
+  2  3
+	/ \
+   4  5
+输出：
+[[1],[2,3],[4,5]]
+解题思路：
+	按照层去遍历，顺序遍历，首先想到使用队列来实现，将root的左右子节点分别放在队列中
+	然后循环队列，将下一层的子节点也放入队列中，将左右子树拿到的值加入到数组中，一次类推
+	利用了队列的先进先出的特点
+	同样也可以使用两个数组，进行循环
+*/
+func PrintFromTopToBottom2(root *TreeNode) [][]int {
+	res := [][]int{}
+	list := [][]*TreeNode{{root}}
+	for i := 0; i < len(list); i++ {
+		l := list[i]
+		mid := []*TreeNode{}
+		l2 := []int{}
+		for _, t := range l {
+			if t.Left != nil {
+				mid = append(mid, t.Left)
+			}
+			if t.Right != nil {
+				mid = append(mid, t.Right)
+			}
+			l2 = append(l2, t.Val)
+		}
+		if len(mid) > 0 {
+			list = append(list, mid)
+		}
+		res = append(res, l2)
+	}
+	return res
+}

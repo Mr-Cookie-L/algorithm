@@ -1,5 +1,7 @@
 package linkedlist
 
+import "sort"
+
 /*
 输入一个链表，按链表从尾到头的顺序返回一个ArrayList。
 
@@ -20,4 +22,23 @@ func printListFromTailToHead(head *ListNode) []int {
 		l--
 	}
 	return res
+}
+
+/*
+给定一个无序单链表，实现单链表的排序(按升序排序)
+*/
+func sortInList(head *ListNode) *ListNode {
+	mid := head
+	values := []int{}
+	for mid != nil {
+		values = append(values, mid.Val)
+		mid = mid.Next
+	}
+	sort.Ints(values)
+	mid = head
+	for _, v := range values {
+		mid.Val = v
+		mid = mid.Next
+	}
+	return head
 }
