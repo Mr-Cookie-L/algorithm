@@ -1,5 +1,9 @@
 package string
 
+import (
+	"sort"
+)
+
 /*
 在一个字符串(0<=字符串长度<=10000，全部由字母组成)中找到第一个只出现一次的字符,
 并返回它的位置, 如果没有则返回 -1（需要区分大小写）.（从0开始计数）
@@ -91,5 +95,38 @@ func LongestValidParentheses(s string) int {
 			}
 		}
 	}
+	return res
+}
+
+/*
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。
+例如输入字符串abc,则按字典序打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+思路：
+	递归思想，先固定一个位置，然后剩下的子序也需要求全排列，以此类推，但是要注意每次都需要回溯
+*/
+func Permutation(str string) []string {
+	n := len(str)
+	s := []byte(str)
+	res := []string{}
+	var helper func(start int)
+	helper = func(start int) {
+		if start >= n {
+			res = append(res, string(s))
+		}
+
+		set := make(map[byte]bool)
+
+		for i := start; i < n; i++ {
+			if set[s[i]] {
+				continue
+			}
+			set[s[i]] = true
+			s[start], s[i] = s[i], s[start]
+			helper(start + 1)
+			s[start], s[i] = s[i], s[start]
+		}
+	}
+	helper(0)
+	sort.Strings(res)
 	return res
 }
