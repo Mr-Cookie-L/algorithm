@@ -17,10 +17,7 @@ func ReverseList(curr *ListNode) *ListNode {
 	var prev *ListNode
 	next := new(ListNode)
 
-	for {
-		if curr == nil {
-			break
-		}
+	for curr != nil {
 		// 1.先记录下一个节点
 		next = curr.Next
 		// 2.将当前节点的next反转
