@@ -42,6 +42,9 @@ func HasCircle(head *ListNode) bool {
 	由于快指针路程是慢指针的两倍，所以有 2(A+B) = A+B+C+B
 	即 A = C
 	所以此时，将其中一个指针指向头，然后两个指针同步，再次相交点就是B点，即环入口
+缺陷：
+	此种解法存在缺陷，如果链表的非环长度 > 2(环长度)时，此时快指针有可能在环内转了多圈，则 2(A+B) != A+B+C
+	则 A != C
 */
 func EntryNodeOfLoop(head *ListNode) *ListNode {
 	if head == nil {
@@ -67,4 +70,18 @@ func EntryNodeOfLoop(head *ListNode) *ListNode {
 		slow2 = slow2.Next
 	}
 	return slow
+}
+
+// 另一种解法，直接使用map，一直循环链表，第一个重复节点即为入口
+func EntryNodeOfLoopMap(head *ListNode) *ListNode {
+	m := map[*ListNode]bool{}
+	tmp := head
+	for tmp != nil {
+		if m[tmp] {
+			return tmp
+		}
+		m[tmp] = true
+		tmp = tmp.Next
+	}
+	return nil
 }
