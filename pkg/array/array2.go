@@ -18,6 +18,7 @@ func MaxelementFor(array []int) (int, int) {
 		} else if i > second && i < max {
 			second = i
 		}
+		continue
 	}
 
 	return max, second
