@@ -1,6 +1,9 @@
 package pkg
 
 import (
+	"regexp"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -62,52 +65,52 @@ func DiDi() {}
 /*
 门店的接单时间设置为一个数组，[‘6-8’,’10-14’,’16-20’,’23-02’]，写一个方法，传这个数组和时间戳，返回这家店是否可接单
 */
-// func DiDi2(arr []string, t int) (bool, error) {
-// 	time := time.Parse(t)
-// 	h := time.Hour
-// 	for _, a := range arr {
-// 		l := strings.Split(a, "-")
-// 		min, err := strconv.Atoi(l[0])
-// 		if err != nil {
-// 			return false, err
-// 		}
-// 		max, err := strconv.Atoi(l[1])
-// 		if err != nil {
-// 			return false, err
-// 		}
-// 		if min > max {
-// 			if h >= min || h <= max {
-// 				return true, nil
-// 			}
-// 		} else {
-// 			if min <= h <= max {
-// 				return true, nil
-// 			}
-// 		}
-// 	}
-// 	return false, nil
-// }
+func DiDi2(arr []string, t int) (bool, error) {
+	time := time.Unix(int64(t), 0)
+	h := time.Hour()
+	for _, a := range arr {
+		l := strings.Split(a, "-")
+		min, err := strconv.Atoi(l[0])
+		if err != nil {
+			return false, err
+		}
+		max, err := strconv.Atoi(l[1])
+		if err != nil {
+			return false, err
+		}
+		if min > max {
+			if h >= min || h <= max {
+				return true, nil
+			}
+		} else {
+			if min <= h || h <= max {
+				return true, nil
+			}
+		}
+	}
+	return false, nil
+}
 
 /*
 反转字符串，连续的字母当成一个字符，如$a = ‘ab.-+.asd+asg-.dsf’;输出为‘dsf.-asg+asd.+-.ab’
 */
-// func DiDi3(input string) string {
-// 	l := []string{}
-// 	tmp := ""
-// 	re := regexp.MustCompile("[a-zA-Z]")
-// 	for _, a := range input {
-// 		s := string(a)
-// 		if re.MatchString(s) {
-// 			tmp += s
-// 		} else {
-// 			l = append(l, tmp)
-// 			tmp = ""
-// 			l = append(l, s)
-// 		}
-// 	}
-// 	l2 := []string{}
-// 	for i := len(l) - 1; i >= 0; i-- {
-// 		l2 = append(l2, l[i])
-// 	}
-// 	return strings.Join(l2, "")
-// }
+func DiDi3(input string) string {
+	l := []string{}
+	tmp := ""
+	re := regexp.MustCompile("[a-zA-Z]")
+	for _, a := range input {
+		s := string(a)
+		if re.MatchString(s) {
+			tmp += s
+		} else {
+			l = append(l, tmp)
+			tmp = ""
+			l = append(l, s)
+		}
+	}
+	l2 := []string{}
+	for i := len(l) - 1; i >= 0; i-- {
+		l2 = append(l2, l[i])
+	}
+	return strings.Join(l2, "")
+}
